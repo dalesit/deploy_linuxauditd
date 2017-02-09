@@ -1,0 +1,8 @@
+[app/install/install_source_checksum]
+version = 6.5.2
+modtime = 1486652630.044070000
+
+[inputs/splunktcp%3A%2F%2F9997]
+owner = admin
+version = 6.5.2
+modtime = 1486656773.391953000
