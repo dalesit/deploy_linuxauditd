@@ -42,20 +42,23 @@
 #
 # Copyright 2017 Your name here, unless otherwise noted.
 #
-class deploy_linuxauditd {
+class deploy_linuxauditd (
+  String $owner = 'splunk',
+  String $group = 'splunk'
+){
   file { '/opt/splunk/etc/apps/TA_linux-auditd/':
     ensure  => 'directory',
     source  => 'puppet:///modules/deploy_linuxauditd/TA_linux-auditd',
-    owner   => 'splunk',
-    group   => 'splunk',
+    owner   => $owner,
+    group   => $group,
     recurse => true,
     require => Package['splunk'],
   }
   file { '/opt/splunk/etc/apps/linux-auditd/':
     ensure  => 'directory',
     source  => 'puppet:///modules/deploy_linuxauditd/linux-auditd',
-    owner   => 'splunk',
-    group   => 'splunk',
+    owner   => $owner,
+    group   => $group,
     recurse => true,
     require => Package['splunk'],
   }
