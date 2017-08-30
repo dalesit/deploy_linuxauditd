@@ -47,4 +47,11 @@ class deploy_linuxauditd::posix_identities (
   String $group = $::deploy_linuxauditd::group
 ){
 
+  file { '/opt/splunk/etc/apps/TA_linux-auditd/lookups/local_posix_identities.csv':
+    content => template('deploy_linuxauditd/local_posix_identities.csv.erb'),
+    owner   => $owner,
+    group   => $group,
+    require => File['/opt/splunk/etc/apps/linux-auditd']
+  }
+
 }
