@@ -1,7 +1,7 @@
-# Class: deploy_linuxauditd
+# Class: deploy_linuxauditd::posix_identities
 # ===========================
 #
-# Full description of class deploy_linuxauditd here.
+# Full description of class deploy_linuxauditd::posix_identities here.
 #
 # Parameters
 # ----------
@@ -28,7 +28,7 @@
 # --------
 #
 # @example
-#    class { 'deploy_linuxauditd':
+#    class { 'deploy_linuxauditd::posix_identities':
 #      servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
 #    }
 #
@@ -42,29 +42,16 @@
 #
 # Copyright 2017 Your name here, unless otherwise noted.
 #
-class deploy_linuxauditd (
-  String $owner = 'splunk',
-  String $group = 'splunk'
+class deploy_linuxauditd::posix_identities (
+  String $owner = $::deploy_linuxauditd::owner,
+  String $group = $::deploy_linuxauditd::group
 ){
-  file { '/opt/splunk/etc/apps/TA_linux-auditd/':
-    ensure  => 'directory',
-    source  => 'puppet:///modules/deploy_linuxauditd/TA_linux-auditd',
-    owner   => $owner,
-    group   => $group,
-    recurse => true,
-    replace => 'no',
-    require => Package['splunk'],
-  }
-  file { '/opt/splunk/etc/apps/linux-auditd/':
-    ensure  => 'directory',
-    source  => 'puppet:///modules/deploy_linuxauditd/linux-auditd',
-    owner   => $owner,
-    group   => $group,
-    recurse => true,
-    replace => 'no',
-    require => Package['splunk'],
-  }
 
-  include deploy_linuxauditd::posix_identities
+  file { '/opt/splunk/etc/apps/TA_linux-auditd/lookups/local_posix_identities.csv':
+    content => template('deploy_linuxauditd/local_posix_identities.csv.erb'),
+    owner   => $owner,
+    group   => $group,
+    require => File['/opt/splunk/etc/apps/linux-auditd']
+  }
 
 }
